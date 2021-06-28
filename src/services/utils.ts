@@ -14,7 +14,7 @@ export const internalServerError = (res: Response, err: Error) =>
     })
 
 export const appointmentAlreadyExists = async (appointmet: Appointment) => {
-    let existing_appointment = await dbQuerry('SELECT * from appointments WHERE client=' + String(appointmet.client) +' AND staff_member=' + String(appointmet.staff_member))
+    let existing_appointment: any = await dbQuerry('SELECT * from appointments WHERE client=' + String(appointmet.client) +' AND staff_member=' + String(appointmet.staff_member))
 
     if (existing_appointment.length > 0){
         return true

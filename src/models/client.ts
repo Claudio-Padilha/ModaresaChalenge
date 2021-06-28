@@ -25,5 +25,6 @@ const listClients = async () => {
 
 export const clientModel = {
     insertClient,
-    listClients
+    listClients,
+    getClient
 }

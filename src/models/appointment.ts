@@ -1,5 +1,12 @@
 import { dbQuerry, dbQueryFirst } from "../services/db"
 
+import {staffMemberModel} from "./staff_member"
+import {clientModel} from "./client"
+
+const { getStaffMember } = staffMemberModel
+
+const { getClient } = clientModel
+
 export type Appointment = {
     id: number,
     client: number,
@@ -22,8 +29,32 @@ const getAppointment = async (id: number) => {
 }
 
 const listAppointments = async () => {
-    const retorno = await dbQuerry(`SELECT * FROM appointments`);
-    return retorno as Appointment[];
+    let ret: any[] = []
+    const appointments: any = await dbQuerry(`SELECT * FROM appointments`);
+
+    for (let i =0; i< appointments.length; i++){
+        let client = await getClient(appointments[i].client)
+        let staff_member = await getStaffMember(appointments[i].staff_member)
+
+        ret.push(
+            {
+                id: appointments[i].id,
+                client: {
+                    name: client.name,
+                    id: client.id
+                },
+                staff_member: {
+                    first_name: staff_member.first_name,
+                    last_name: staff_member.last_name,
+                    id: staff_member.id
+                },
+                start: appointments[i].start,
+                end:appointments[i].end
+            }
+        )
+    }
+
+    return ret;
 }
 
 export const appointmentModel = {

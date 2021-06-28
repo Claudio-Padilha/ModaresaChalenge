@@ -5,7 +5,7 @@ import { badRequest, internalServerError } from '../services/utils'
 import { appointmentAlreadyExists, validStaffMember, validClient } from "../services/utils"
 
 const insertAppointment = async (req: Request, res: Response) => {
-    const appointment_req = req.body
+    const appointment_req = res.json(req.body)
 
     if (!appointment_req)
         return badRequest(res, "You should inform a appointment!")
